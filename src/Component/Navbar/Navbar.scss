@@ -1,0 +1,8 @@
+.nav-item {
+    .nav-link {
+        user-select: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
