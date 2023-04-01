@@ -4,7 +4,7 @@ module.exports = {
     entry: './src/index/index.ts', // Dẫn tới file index.js ta đã tạo
     output: {
         filename: 'index.js',
-        path: path.resolve(__dirname, 'build'),
+        path: path.resolve(__dirname, 'public'),
     },
     module: {
         rules: [
@@ -39,7 +39,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             // template: './public/index.html',
-            template: './public/index.html',
+            template: './html/index.html',
             filename: 'index.html',
         }),
     ],
