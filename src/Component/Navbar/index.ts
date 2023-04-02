@@ -1,13 +1,12 @@
-import { User } from '../../global';
+import { User, appendChild, $, $$ } from '../../global';
 import './Navbar.scss';
-export function Navbar(isLogged: boolean, profileInfo?: User): string {
+export function Navbar(isLogged: boolean, profileInfo?: User): void {
     const urlLogo = 'https://iili.io/HO3XD91.md.png';
-    console.log(isLogged);
-
+    let navbarString;
     if (isLogged && profileInfo) {
-        return `
+        navbarString = `
         <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg">
   <!-- Container wrapper -->
   <div class="container-xxl">
     <!-- Toggle button -->
@@ -26,7 +25,8 @@ export function Navbar(isLogged: boolean, profileInfo?: User): string {
     <!-- Collapsible wrapper -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
-      <a class="navbar-brand mt-2 mt-lg-0" href="index.html">
+         
+      <a class="navbar-brand mt-2 mt-lg-0" href="home.html" >
         <img
           src=${urlLogo}
           height="40"
@@ -37,7 +37,10 @@ export function Navbar(isLogged: boolean, profileInfo?: User): string {
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="home.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Design</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Cart</a>
@@ -125,12 +128,12 @@ export function Navbar(isLogged: boolean, profileInfo?: User): string {
 <!-- Navbar -->
         `;
     } else {
-        return `<!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        navbarString = `<!-- Navbar -->
+        <nav class="navbar navbar-expand-lg">
           <!-- Container wrapper -->
           <div class="container-xxl">
             <!-- Navbar brand -->
-            <a class="navbar-brand me-2" href="index.html">
+            <a class="navbar-brand me-2" href="home.html">
               <img
                 src =${urlLogo}
                 height="40"
@@ -158,7 +161,10 @@ export function Navbar(isLogged: boolean, profileInfo?: User): string {
               <!-- Left links -->
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Home</a>
+                  <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html">Design</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Cart</a>
@@ -187,4 +193,5 @@ export function Navbar(isLogged: boolean, profileInfo?: User): string {
         </nav>
         <!-- Navbar -->`;
     }
+    appendChild($('.root'), navbarString);
 }

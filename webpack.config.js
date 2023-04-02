@@ -1,9 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
-    entry: './src/index/index.ts', // Dẫn tới file index.js ta đã tạo
+    entry: './src/home/home.ts', // Dẫn tới file home.js ta đã tạo
     output: {
-        filename: 'index.js',
+        filename: 'home.js',
         path: path.resolve(__dirname, 'public'),
     },
     module: {
@@ -38,9 +38,9 @@ module.exports = {
     // Chứa các plugins sẽ cài đặt trong tương lai
     plugins: [
         new HtmlWebpackPlugin({
-            // template: './public/index.html',
-            template: './html/index.html',
-            filename: 'index.html',
+            // template: './public/home.html',
+            template: './html/home.html',
+            filename: 'home.html',
         }),
     ],
 };

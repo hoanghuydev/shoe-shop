@@ -1,8 +1,20 @@
-.nav-item {
-    .nav-link {
-        user-select: none;
-        &:hover {
-            text-decoration: underline;
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: white;
+    transition: all linear 0.3s;
+    .nav-item {
+        .nav-link {
+            user-select: none;
+            &:hover {
+                text-decoration: underline;
+            }
         }
+    }
+    &-brand {
+        user-select: none;
     }
 }

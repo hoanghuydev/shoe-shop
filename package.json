@@ -19,12 +19,17 @@
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
-    "open-my-html": "open-cli ./build/login.html",
+    "open-my-html": "open-cli ./build/home.html",
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "@types/bonjour": "^3.5.10",
+    "@types/bootstrap": "^5.2.6",
     "@types/dat.gui": "^0.7.9",
     "dat.gui": "^0.7.9",
+    "mdb-calendar": "git+https://oauth2:HfT9M7gy36UMxiyYX334@git.mdbootstrap.com/mdb/standard/plugins/prd/calendar",
+    "mdb-ui-kit": "git+https://oauth2:HfT9M7gy36UMxiyYX334@git.mdbootstrap.com/mdb/standard/mdb-ui-kit-pro-advanced",
+    "node-sass": "^8.0.0",
     "three": "^0.151.2"
   },
   "name": "shoesshop",

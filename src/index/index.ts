@@ -1,5 +1,11 @@
-import { $, $$, appendChild, User } from '../global';
+import { $, $$, appendChild, User, colorList } from '../global';
 import { Navbar } from '../Component/Navbar/index';
+import { Canvas, handleColor } from '../Component/Canvas';
+import { DesignTable } from './Component/DesignTable';
+import './index.scss';
+import { TablePart } from './Component/TablePart';
+import { Options } from './Component/Options';
+
 function App() {
     let huy = new User(
         'huylat579',
@@ -12,6 +18,10 @@ function App() {
         838463061
     );
     //Render Header
-    appendChild($('.root'), Navbar(JSON.parse(localStorage.getItem('isLogged') ?? 'false'), huy));
+    Navbar(JSON.parse(localStorage.getItem('isLogged') ?? 'false'), huy);
+    Canvas('Laces', false);
+    DesignTable();
+    TablePart();
+    Options();
 }
 App();

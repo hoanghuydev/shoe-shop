@@ -1,0 +1,130 @@
+$heightScrollBar: 10px;
+
+@mixin absoluteFull($top: 0px, $right: 0px, $bottom: 0px, $left: 0px, $zIdenx: 0) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    z-index: $zIdenx;
+}
+@mixin absolute($zIdenx: 0) {
+    position: absolute;
+    z-index: $zIdenx;
+    @content;
+}
+@mixin marginFlex($top: auto, $right: auto, $bottom: auto, $left: auto) {
+    display: flex;
+    margin: $top $right $bottom $left;
+    @content;
+}
+@mixin hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+$timeAnimateFade: 0.3s;
+@mixin fadeInSlide($start: 0px, $end: 0px, $type: 'x') {
+    @if ($type == 'x') {
+        @keyframes fadeInSlideX {
+            from {
+                transform: translateX($start);
+                opacity: 0;
+            }
+            to {
+                transform: translateX($end);
+                opacity: 1;
+            }
+        }
+        animation: fadeInSlideX $timeAnimateFade ease-in forwards;
+    }
+    @if ($type == 'y') {
+        @keyframes fadeInSlideY {
+            from {
+                transform: translateY($start);
+                opacity: 0;
+            }
+            to {
+                transform: translateY($end);
+                opacity: 1;
+            }
+        }
+        animation: fadeInSlideY $timeAnimateFade ease-in forwards;
+    }
+}
+@mixin fadeOutSlide($start: 0px, $end: 0px, $type: 'x') {
+    @if ($type == 'x') {
+        @keyframes fadeOutSlideX {
+            from {
+                transform: translateX($start);
+                opacity: 1;
+            }
+            to {
+                transform: translateX($end);
+                // opacity: 0;
+            }
+        }
+        animation: fadeOutSlideX $timeAnimateFade ease-in forwards;
+    }
+    @if ($type == 'y') {
+        @keyframes fadeOutSlideY {
+            from {
+                transform: translateY($start);
+                opacity: 1;
+            }
+            to {
+                transform: translateY($end);
+                // opacity: 0;
+            }
+        }
+        animation: fadeOutSlideY $timeAnimateFade ease-in forwards;
+    }
+    @if ($type == 'a') {
+        @keyframes fadeInA {
+            from {
+                transform: translateX($start);
+                opacity: 0;
+            }
+            to {
+                transform: translateX($end);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeOutA {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+        animation: fadeInA $timeAnimateFade linear, fadeOut linear 3s forwards;
+    }
+}
+@mixin bsd {
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+@mixin responsivePhone() {
+    @media screen and (max-width: 720px) {
+        @content;
+    }
+}
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+    height: $heightScrollBar;
+    background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(106, 106, 106);
+    &:hover {
+        cursor: pointer;
+        opacity: 0.7;
+    }
+}
