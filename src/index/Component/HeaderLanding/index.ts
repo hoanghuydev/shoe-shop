@@ -13,7 +13,7 @@ export function HeaderLanding() {
           <div class="text-white">
             <h1 class="mb-3">Design Your Shoes</h1>
             <h4 class="mb-3">Create your own design with premium materials</h4>
-            <a class="btn btn-outline-light btn-lg" href="index.html" role="button"
+            <a class="btn btn-outline-light btn-lg" href="design.html" role="button"
             >Start Design</a
             >
           </div>

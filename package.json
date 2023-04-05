@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
-    "open-my-html": "open-cli ./build/home.html",
+    "open-my-html": "open-cli ./public/index.html",
     "build": "webpack --mode production",
     "predeploy" : "npm run build",
     "deploy" : "gh-pages -d public"
