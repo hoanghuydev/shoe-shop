@@ -1,0 +1,13 @@
+.form-outline {
+    .form-control {
+        box-shadow: inset 0 0 0 0.5px black;
+    }
+    .form-label {
+        top: 6px !important;
+        background-color: white;
+        z-index: 1000;
+    }
+}
+.form-outline > input:focus {
+    border: 1.9px solid #3b71ca !important;
+}

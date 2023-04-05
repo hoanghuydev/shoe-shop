@@ -4,8 +4,10 @@ import { AnimationClip, Color, CubeTextureLoader, DoubleSide } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { appendChild, $, $$, User, listPart } from '../../global';
+import { appendChild, $, $$, User, listPart, OrderItem } from '../../global';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { DesignTable } from '../../design/Component/DesignTable';
+import { TablePart } from '../../design/Component/TablePart';
 let colorSelect = new THREE.Color();
 let partShoe = '';
 let interval;
@@ -13,36 +15,91 @@ let runAnimate = false;
 export function handleColor(color: string): void {
     colorSelect = new THREE.Color(parseInt(color.replace('#', ''), 16));
 }
-export function getPart(): string {
+export function getCurrentPart() {
     return partShoe;
 }
+export function getIndexPart(partString: string): number {
+    let indexPart = 0;
+    listPart.map((part, index) => {
+        if (part.partItem == partString) return (indexPart = index);
+    });
+    return indexPart;
+}
 export function setPart(part: string): void {
-    console.log(part);
-
+    const oldPart = partShoe;
     partShoe = part;
+    // Update dom of part element
     function updatePartElement() {
-        listPart.map((part, index) => {
-            $(`.table-part__item${index} > p`)?.classList.remove('bold');
-            ($(`.table-part__item${index} > div`) as HTMLElement).classList.remove('d-flex');
-        });
-        ($(`.table-part__item${listPart.indexOf(part)}`) as HTMLElement).classList.add('bold');
-        ($(`.table-part__item${listPart.indexOf(part)} > div`) as HTMLElement).classList.add(
+        // update table part dom
+        //  method 1
+        // Remove active old part
+        $(`.table-part__item${getIndexPart(oldPart)} > p`)?.classList.remove('bold');
+        ($(`.table-part__item${getIndexPart(oldPart)} > div`) as HTMLElement).classList.remove(
             'd-flex'
         );
+        // set active for current part in table of part shoes
+        ($(`.table-part__item${getIndexPart(partShoe)}`) as HTMLElement).classList.add('bold');
+        ($(`.table-part__item${getIndexPart(partShoe)} > div`) as HTMLElement).classList.add(
+            'd-flex'
+        );
+        // method 2
+        //  we can replace method 1 with method 2 but table-part will be re-render > show animation again , but method 2 pretty short
+        // $('.root > .table-part')?.remove();
+        // TablePart();
+        // re-render design table
+        $('.root > .design-table')?.remove();
+        DesignTable();
     }
     updatePartElement();
 }
+// set true if checkbox run animate is checked
 export function setRunAnimate(isRun: boolean) {
     runAnimate = isRun;
+}
+// get product when click btn add to card
+export function addToCart(
+    imageItem: string,
+    colorListDesign: { color: string; partItem: string }[]
+) {
+    const orderItem = new OrderItem(imageItem, colorListDesign, 1, 42, 150);
+    console.log(orderItem);
 }
 export function Canvas(part: string, runAnimation: boolean) {
     partShoe = part;
     runAnimate = runAnimation;
     // Render canvas div
-    appendChild($('.root'), '<div class="canvasDiv"></div>');
+    appendChild(
+        $('.root'),
+        '<div class="canvasDiv" style="position : absolute;top :0;right:0;left:0;bottom:0;"></div>'
+    );
+    // Add btn add cart and handle click button
+    function btnAddProduct() {
+        appendChild(
+            $('.root'),
+            '<button type="button" class="btn btn-primary btn-add-cart">Add To Cart</button'
+        );
+        $('.btn-add-cart')?.addEventListener('click', function () {
+            addToCart(createImageLink() ?? '', listPart);
+        });
+        function createImageLink() {
+            let imgData = '';
+            let strDownloadMime = 'image/octet-stream';
+            try {
+                let strMime = 'image/jpeg';
+                imgData = render.domElement.toDataURL(strMime);
+                return imgData;
+            } catch (e) {
+                console.log(e);
+                return;
+            }
+        }
+    }
+    btnAddProduct();
 
     // setup
-    const render = new THREE.WebGL1Renderer();
+    const render = new THREE.WebGL1Renderer({
+        preserveDrawingBuffer: true,
+    });
     render.shadowMap.enabled = true;
     render.setSize(window.innerWidth, window.innerHeight);
     // resize canvas
@@ -64,6 +121,7 @@ export function Canvas(part: string, runAnimation: boolean) {
     const controls = new OrbitControls(camera, render.domElement);
     controls.minDistance = 10;
     controls.maxDistance = 30;
+    controls.enablePan = false;
     // controls.enableZoom = false;
 
     // Mesh
@@ -83,8 +141,6 @@ export function Canvas(part: string, runAnimation: boolean) {
     scene.add(planeCastShadow);
 
     // load model
-    // const mtlLoader = new MTLLoader();
-    const gui = new dat.GUI();
     const shoesLoader = new OBJLoader();
     shoesLoader.load('./model/shoe.obj', function t(object: any) {
         object.material = new THREE.MeshStandardMaterial();
@@ -103,34 +159,10 @@ export function Canvas(part: string, runAnimation: boolean) {
         interval = setInterval(() => {
             if (colorSelectOld != colorSelect) {
                 colorSelectOld = colorSelect;
+                const colorHexString = colorSelect.getHexString();
                 switch (partShoe) {
-                    case 'Eyelet':
-                        object.getObjectByName('Circle001').material.color.set(colorSelect);
-                        object.getObjectByName('Circle002').material.color.set(colorSelect);
-                        object.getObjectByName('Circle011').material.color.set(colorSelect);
-                        object.getObjectByName('Circle014').material.color.set(colorSelect);
-                        break;
-                    case 'Body':
-                        object.getObjectByName('002').material.color.set(colorSelect);
-                        object.getObjectByName('1').material.color.set(colorSelect);
-                        break;
-                    case 'Tongue':
-                        object.getObjectByName('dil001').material.color.set(colorSelect);
-                        object.getObjectByName('dil').material.color.set(colorSelect);
-                        break;
-                    case 'Sole':
-                        object.getObjectByName('taban001').material.color.set(colorSelect);
-                        object.getObjectByName('taban').material.color.set(colorSelect);
-                        break;
-                    case 'Heel Strap':
-                        object.getObjectByName('arka001').material.color.set(colorSelect);
-                        object.getObjectByName('arka').material.color.set(colorSelect);
-                        break;
-                    case 'Middle':
-                        object.getObjectByName('gri001').material.color.set(colorSelect);
-                        object.getObjectByName('gri').material.color.set(colorSelect);
-                        break;
-                    case 'Laces':
+                    case listPart[0].partItem:
+                        listPart[0].color = colorHexString;
                         object.getObjectByName('Arc001').material.color.set(colorSelect);
                         object.getObjectByName('Arc002').material.color.set(colorSelect);
                         object.getObjectByName('Arc003').material.color.set(colorSelect);
@@ -138,13 +170,47 @@ export function Canvas(part: string, runAnimation: boolean) {
                         object.getObjectByName('Arc005').material.color.set(colorSelect);
                         object.getObjectByName('Arc006').material.color.set(colorSelect);
                         break;
-                    case 'Heel Counter':
+                    case listPart[1].partItem:
+                        listPart[1].color = colorHexString;
+                        object.getObjectByName('Box001').material.color.set(colorSelect);
+                        object.getObjectByName('Box002').material.color.set(colorSelect);
+                        break;
+                    case listPart[2].partItem:
+                        listPart[2].color = colorHexString;
+                        object.getObjectByName('dil001').material.color.set(colorSelect);
+                        object.getObjectByName('dil').material.color.set(colorSelect);
+                        break;
+                    case listPart[3].partItem:
+                        listPart[3].color = colorHexString;
+                        object.getObjectByName('arka001').material.color.set(colorSelect);
+                        object.getObjectByName('arka').material.color.set(colorSelect);
+                        break;
+                    case listPart[4].partItem:
+                        listPart[4].color = colorHexString;
                         object.getObjectByName('Line001').material.color.set(colorSelect);
                         object.getObjectByName('Line002').material.color.set(colorSelect);
                         break;
-                    case 'Vamp':
-                        object.getObjectByName('Box001').material.color.set(colorSelect);
-                        object.getObjectByName('Box002').material.color.set(colorSelect);
+                    case listPart[5].partItem:
+                        listPart[5].color = colorHexString;
+                        object.getObjectByName('Circle001').material.color.set(colorSelect);
+                        object.getObjectByName('Circle002').material.color.set(colorSelect);
+                        object.getObjectByName('Circle011').material.color.set(colorSelect);
+                        object.getObjectByName('Circle014').material.color.set(colorSelect);
+                        break;
+                    case listPart[6].partItem:
+                        listPart[6].color = colorHexString;
+                        object.getObjectByName('002').material.color.set(colorSelect);
+                        object.getObjectByName('1').material.color.set(colorSelect);
+                        break;
+                    case listPart[7].partItem:
+                        listPart[7].color = colorHexString;
+                        object.getObjectByName('gri001').material.color.set(colorSelect);
+                        object.getObjectByName('gri').material.color.set(colorSelect);
+                        break;
+                    case listPart[8].partItem:
+                        listPart[8].color = colorHexString;
+                        object.getObjectByName('taban001').material.color.set(colorSelect);
+                        object.getObjectByName('taban').material.color.set(colorSelect);
                         break;
                     default:
                         break;

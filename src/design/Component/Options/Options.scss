@@ -1,0 +1,29 @@
+@import '../../../global';
+.options {
+    position: fixed;
+    top: 80px;
+    left: 10px;
+    .run-animate {
+        display: flex;
+
+        label {
+            user-select: none;
+            margin-left: 2px;
+            margin-right: 11px;
+            font-size: 15px;
+            font-weight: 300;
+        }
+    }
+}
+.toast-container {
+    position: fixed;
+    top: 75px;
+    right: 0;
+    width: fit-content;
+    .col-8 {
+        float: right;
+        @include fadeOutSlide(240px, 0, 'a');
+    }
+    .toast {
+    }
+}

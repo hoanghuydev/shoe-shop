@@ -26,7 +26,7 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Navbar brand -->
          
-      <a class="navbar-brand mt-2 mt-lg-0" href="home.html" >
+      <a class="navbar-brand mt-2 mt-lg-0" href="index.html" >
         <img
           src=${urlLogo}
           height="40"
@@ -37,13 +37,13 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="home.html">Home</a>
+          <a class="nav-link" href="index.html">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.html">Design</a>
+          <a class="nav-link" href="design.html">Design</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Cart</a>
+          <a class="nav-link" href="cart.html">Cart</a>
         </li>
       </ul>
       <!-- Left links -->
@@ -133,7 +133,7 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
           <!-- Container wrapper -->
           <div class="container-xxl">
             <!-- Navbar brand -->
-            <a class="navbar-brand me-2" href="home.html">
+            <a class="navbar-brand me-2" href="index.html">
               <img
                 src =${urlLogo}
                 height="40"
@@ -161,22 +161,26 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
               <!-- Left links -->
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link" href="home.html">Home</a>
+                  <a class="nav-link" href="index.html">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="index.html">Design</a>
+                  <a class="nav-link" href="design.html">Design</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Cart</a>
+                  <a class="nav-link" href="cart.html">Cart</a>
                 </li>
               </ul>
               <!-- Left links -->
         
               <div class="d-flex align-items-center">
-                <button type="button" class="btn btn-link px-3 me-2" onclick="window.location.href='./login.html'">
+                <button type="button" class="btn btn-link px-3 me-2" onclick="localStorage.setItem('isLogin', JSON.stringify(true));
+                window.location.href = './login.html';"
+                }>
                   Login
                 </button>
-                <button type="button" class="btn btn-primary me-3" onclick="window.location.href='./login.html'">
+                <button type="button" class="btn btn-primary me-3" onclick="localStorage.setItem('isLogin', JSON.stringify(false));
+                window.location.href = './login.html';"
+                }>
                   Sign up
                 </button>
                 <a

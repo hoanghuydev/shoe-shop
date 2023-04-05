@@ -1,5 +1,10 @@
-@import '../../global';
+@import '../../global.scss';
 .canvasDiv {
     @include absoluteFull();
     overflow: hidden;
+}
+.btn-add-cart {
+    position: fixed;
+    top: 110px;
+    left: 10px;
 }

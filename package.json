@@ -1,4 +1,5 @@
 {
+  "homepage": "https://hoanghuydev.github.io/shoe-shop/",
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
@@ -6,6 +7,7 @@
     "@types/three": "^0.150.0",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
+    "css-modules-typescript-loader": "^2.0.1",
     "html-webpack-plugin": "^5.5.0",
     "open-cli": "^7.2.0",
     "sass": "^1.60.0",
@@ -20,13 +22,18 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "open-my-html": "open-cli ./build/home.html",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "predeploy" : "npm run build",
+    "deploy" : "gh-pages -d public"
   },
   "dependencies": {
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
     "@types/bonjour": "^3.5.10",
     "@types/bootstrap": "^5.2.6",
     "@types/dat.gui": "^0.7.9",
     "dat.gui": "^0.7.9",
+    "gh-pages": "^5.0.0",
+
     "mdb-calendar": "git+https://oauth2:HfT9M7gy36UMxiyYX334@git.mdbootstrap.com/mdb/standard/plugins/prd/calendar",
     "mdb-ui-kit": "git+https://oauth2:HfT9M7gy36UMxiyYX334@git.mdbootstrap.com/mdb/standard/mdb-ui-kit-pro-advanced",
     "node-sass": "^8.0.0",
