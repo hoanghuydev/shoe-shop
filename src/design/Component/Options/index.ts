@@ -9,23 +9,6 @@ export function Options() {
             setRunAnimate(element.checked);
         });
         // Add to cart
-        // $('.btn-add-cart')?.addEventListener('click', function () {
-        //     ($('.toast-container') as HTMLElement).innerHTML = `
-        //     <div class="col-8 me-2 mb-2">
-        //         <div
-        //         class="toast show toast-danger"
-        //         role="alert"
-        //         >
-        //             <div class="toast-header toast-danger">
-        //               <i class="fas fa-exclamation-circle fa-lg me-2"></i>
-        //               <strong class="me-auto">Waring</strong>
-        //             </div>
-        //             <div class="toast-body">You need login to buy this item.</div>
-        //           </div>
-        //         </div>
-        //     </div>
-        //     `;
-        // });
     }
     appendChild(
         $('.root'),

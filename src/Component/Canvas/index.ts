@@ -4,10 +4,15 @@ import { AnimationClip, Color, CubeTextureLoader, DoubleSide } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as dat from 'dat.gui';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { appendChild, $, $$, User, listPart, OrderItem } from '../../global';
+import { appendChild, $, $$, listPart, updateCountCartItem } from '../../global';
+import { Shoes, User } from '../../model/model';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 import { DesignTable } from '../../design/Component/DesignTable';
 import { TablePart } from '../../design/Component/TablePart';
+import { API, request } from '../../untils/request';
+import { Navbar } from '../Navbar';
+// Trong thực tế ta nên dùng class component cho component này nhưng do project cá nhân và chưa dùng react nên làm class sẽ mất nhiều giai đoạn hơn
+
 let colorSelect = new THREE.Color();
 let partShoe = '';
 let interval;
@@ -43,7 +48,7 @@ export function setPart(part: string): void {
             'd-flex'
         );
         // method 2
-        //  we can replace method 1 with method 2 but table-part will be re-render > show animation again , but method 2 pretty short
+        //  we can replace method  meth1 withod 2 but table-part will be re-render > show animation again , but method 2 pretty short
         // $('.root > .table-part')?.remove();
         // TablePart();
         // re-render design table
@@ -57,12 +62,21 @@ export function setRunAnimate(isRun: boolean) {
     runAnimate = isRun;
 }
 // get product when click btn add to card
-export function addToCart(
-    imageItem: string,
+export async function addToCart(
+    imageShoes: string,
     colorListDesign: { color: string; partItem: string }[]
 ) {
-    const orderItem = new OrderItem(imageItem, colorListDesign, 1, 42, 150);
-    console.log(orderItem);
+    const user: User = JSON.parse(localStorage.getItem('userInfo') ?? 'false');
+    await request(
+        API.addToCart(user._id),
+        {
+            userID: user._id,
+            size: 40,
+            quantity: 1,
+            imageShoes,
+        },
+        user.accessToken
+    );
 }
 export function Canvas(part: string, runAnimation: boolean) {
     partShoe = part;
@@ -78,19 +92,55 @@ export function Canvas(part: string, runAnimation: boolean) {
             $('.root'),
             '<button type="button" class="btn btn-primary btn-add-cart">Add To Cart</button'
         );
-        $('.btn-add-cart')?.addEventListener('click', function () {
-            addToCart(createImageLink() ?? '', listPart);
+        $('.btn-add-cart')?.addEventListener('click', async function () {
+            if (JSON.parse(localStorage.getItem('isLogged') ?? 'false')) {
+                const imageShoes = createImageLink();
+                addToCart(imageShoes, listPart);
+                ($('.toast-container') as HTMLElement).innerHTML = `
+            <div class="col-8 me-2 mb-2">
+                <div
+                class="toast show toast-success"
+                role="alert"
+                >
+                    <div class="toast-header toast-success">
+                      <i class="fas fa-exclamation-circle fa-lg me-2"></i>
+                      <strong class="me-auto">Success</strong>
+                    </div>
+                    <div class="toast-body">Added to cart</div>
+                  </div>
+                </div>
+            </div>
+            `;
+                updateCountCartItem(1);
+            } else {
+                ($('.toast-container') as HTMLElement).innerHTML = `
+            <div class="col-8 me-2 mb-2">
+                <div
+                class="toast show toast-danger"
+                role="alert"
+                >
+                    <div class="toast-header toast-danger">
+                      <i class="fas fa-exclamation-circle fa-lg me-2"></i>
+                      <strong class="me-auto">Waring</strong>
+                    </div>
+                    <div class="toast-body">You need login to buy this item.</div>
+                  </div>
+                </div>
+            </div>
+            `;
+            }
         });
-        function createImageLink() {
+        function createImageLink(): string {
             let imgData = '';
             let strDownloadMime = 'image/octet-stream';
             try {
                 let strMime = 'image/jpeg';
-                imgData = render.domElement.toDataURL(strMime);
+                imgData = render.domElement.toDataURL(strMime, 0.7);
+
                 return imgData;
             } catch (e) {
                 console.log(e);
-                return;
+                return '';
             }
         }
     }

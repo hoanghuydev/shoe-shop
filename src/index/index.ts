@@ -4,7 +4,10 @@ import { FAQ } from './Component/FAQ';
 import { HeaderLanding } from './Component/HeaderLanding';
 
 function App() {
-    Navbar(JSON.parse(localStorage.getItem('isLogged') ?? 'false'));
+    Navbar(
+        JSON.parse(localStorage.getItem('isLogged') ?? 'false'),
+        JSON.parse(localStorage.getItem('userInfo') ?? 'false')
+    );
     HeaderLanding();
     FAQ();
     Footer();

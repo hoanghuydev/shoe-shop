@@ -26,20 +26,24 @@ export function TablePart(): void {
                 tablePart?.classList.add('isHideTable');
                 $('.table-part__hide > i')!.classList.add('rotateY');
                 ($('.table-part__content') as HTMLElement).remove();
-                tablePart.style.overflowY = 'visible';
                 setTimeout(() => {
+                    tablePart.style.overflowY = 'visible';
                     tablePartHideButton.disabled = false;
                 }, 320);
-            } else if ($('.table-part__content') == null) {
+            } else if (!$('.table-part__content')) {
                 tablePart!.innerHTML += tableContentString();
-                ($(`.table-part__item${getIndexPart}`) as HTMLElement).classList.add('bold');
-                ($(`.table-part__item${getIndexPart} > div`) as HTMLElement).classList.add(
-                    'd-flex'
-                );
+                (
+                    $(`.table-part__item${getIndexPart(getCurrentPart())}`) as HTMLElement
+                ).classList.add('bold');
+                (
+                    $(`.table-part__item${getIndexPart(getCurrentPart())} > div`) as HTMLElement
+                ).classList.add('d-flex');
                 tablePart?.classList.remove('isHideTable');
+                tablePart?.classList.remove('isShowTable');
+
                 $('.table-part__hide > i')!.classList.remove('rotateY');
-                addEventListenerElement();
                 tablePart.style.overflowY = 'scroll';
+                addEventListenerElement();
             }
         });
     }

@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { Navbar } from './Component/Navbar';
+import { CartTotal } from './cart/CartTotal';
 export const $ = document.querySelector.bind(document);
 export const $$ = document.querySelectorAll.bind(document);
 export const appendChild = (parentElement: any, elementChildString: string) => {
@@ -6,7 +8,7 @@ export const appendChild = (parentElement: any, elementChildString: string) => {
         new DOMParser().parseFromString(elementChildString, 'text/html').body.lastElementChild
     );
 };
-export function getParentElement(element: HTMLElement, stringParent: string) {
+export function getParentElement(element: any, stringParent: string) {
     while (element.parentElement) {
         if (
             element.parentElement.classList.contains(stringParent) ||
@@ -27,37 +29,7 @@ export const listPart = [
     { color: '#fff', partItem: 'Middle' },
     { color: '#fff', partItem: 'Sole' },
 ];
-export class User {
-    constructor(
-        public userName: string,
-        public password: string,
-        public fisrtName: string,
-        public lastName: string,
-        public born: Date,
-        public avatar: string,
-        public address: string,
-        public phoneNumber: number
-    ) {}
-    getFullName(): string {
-        return this.fisrtName + this.lastName;
-    }
-    getAge(): number {
-        const currentDate = new Date();
-        return currentDate.getFullYear() - this.born.getFullYear();
-    }
-    isValidPhoneNumber(): boolean {
-        return this.phoneNumber.toString().length > 8 && this.phoneNumber.toString().length < 13;
-    }
-}
-export class OrderItem {
-    constructor(
-        public imageItem: string,
-        public colorListDesign: { color: string; partItem: string }[],
-        public numItem: number,
-        public sizeItem: number,
-        public priceItem: number //dollar
-    ) {}
-}
+
 export const colorList = [
     { id: 1, colorString: '#8b0016' },
     { id: 2, colorString: '#b2001f' },
@@ -91,3 +63,25 @@ export const colorList = [
     { id: 30, colorString: '#555555' },
     { id: 31, colorString: '#000000' },
 ];
+export function updateCountCartItem(number: number) {
+    const countCartItem = $('.count-cart-item') as HTMLSpanElement;
+    if (countCartItem) {
+        const currentItem = parseInt(countCartItem.innerText);
+        if (!isNaN(currentItem)) {
+            countCartItem.innerText = (currentItem + number).toString();
+        }
+    }
+}
+export function updateCartTotal(counter: number) {
+    const countCartItem = $('.count-cart-total') as HTMLSpanElement;
+    if (countCartItem) {
+        const currentItem = parseInt(countCartItem.innerText);
+        if (!isNaN(currentItem)) {
+            countCartItem.innerText = (currentItem + counter).toString();
+        }
+        if (currentItem + counter === 0) {
+            $('.cart-total')?.remove();
+            CartTotal(0);
+        }
+    }
+}

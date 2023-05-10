@@ -84,5 +84,8 @@
 }
 .isHideTable {
     @include fadeOutSlide(0, -110px, 'x');
+}
+.isShowTable {
+    @include fadeInSlide(-110px, 0px, 'x');
     opacity: 1;
 }

@@ -18,7 +18,7 @@ export function FAQ() {
 
         <!-- Jumbotron -->
         <div class="container py-4">
-          <div class="row g-0 align-items-center">
+          <div class="row g-0 align-items-center overflow-hidden">
             <div class="col-lg-6 mb-5 mb-lg-0 slideInLeft wow" data-wow-duration="1.5s" data-wow-delay="0.1s">
               <div class="card cascading-right" style="
                                                        background: hsla(0, 0%, 100%, 0.55);

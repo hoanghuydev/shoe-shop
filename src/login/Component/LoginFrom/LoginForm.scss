@@ -11,3 +11,11 @@
 .form-outline > input:focus {
     border: 1.9px solid #3b71ca !important;
 }
+.countdown-otp {
+    display: none;
+    color: rgb(17, 97, 235);
+}
+.error-login,
+.error-register {
+    color: red;
+}

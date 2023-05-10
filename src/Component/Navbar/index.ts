@@ -1,6 +1,8 @@
-import { User, appendChild, $, $$ } from '../../global';
+import { appendChild, $, $$ } from '../../global';
+import { User } from '../../model/model';
+import { API, request } from '../../untils/request';
 import './Navbar.scss';
-export function Navbar(isLogged: boolean, profileInfo?: User): void {
+export async function Navbar(isLogged: boolean, profileInfo?: User) {
     const urlLogo = 'https://iili.io/HO3XD91.md.png';
     let navbarString;
     if (isLogged && profileInfo) {
@@ -53,8 +55,9 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
     <!-- Right elements -->
     <div class="d-flex align-items-center">
       <!-- Icon -->
-      <a class="text-reset me-3" href="#">
+      <a class="text-reset me-3" href="cart.html">
         <i class="fas fa-shopping-cart"></i>
+        <span class="badge rounded-pill badge-notification bg-danger count-cart-item">0</span>
       </a>
 
       <!-- Notifications -->
@@ -97,7 +100,7 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
           aria-expanded="false"
         >
           <img
-            src=${profileInfo.avatar}
+            src=${profileInfo.avatarUrl}
             class="rounded-circle"
             height="25"
             alt="Black and White Portrait of a Man"
@@ -112,10 +115,13 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
             <a class="dropdown-item" href="#">My profile</a>
           </li>
           <li>
-            <a class="dropdown-item" href="#">Settings</a>
+            <a class="dropdown-item" href="history.html">Purchase history</a>
           </li>
           <li>
-            <div class="dropdown-item" onclick="localStorage.setItem('isLogged', 'false');  window.location.reload()
+            <div class="dropdown-item logout-btn" onclick="
+              localStorage.setItem('isLogged', 'false');
+              localStorage.setItem('userInfo', 'false');
+              window.location.reload();
             ">Logout</div>
           </li>
         </ul>
@@ -166,9 +172,7 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
                 <li class="nav-item">
                   <a class="nav-link" href="design.html">Design</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="cart.html">Cart</a>
-                </li>
+              
               </ul>
               <!-- Left links -->
         
@@ -198,4 +202,22 @@ export function Navbar(isLogged: boolean, profileInfo?: User): void {
         <!-- Navbar -->`;
     }
     appendChild($('.root'), navbarString);
+    addEventListenerElement();
+    async function addEventListenerElement() {
+        if (isLogged && profileInfo) {
+            const user: User = JSON.parse(localStorage.getItem('userInfo') ?? 'false');
+            let listCartItem = await request(
+                API.getUserCart(user._id),
+                undefined,
+                user.accessToken
+            );
+            const countCartItem = $('.count-cart-item') as HTMLSpanElement;
+            if (countCartItem) {
+                const currentItem = parseInt(countCartItem.innerText);
+                if (!isNaN(currentItem)) {
+                    countCartItem.innerText = listCartItem.shoesList.length.toString();
+                }
+            }
+        }
+    }
 }
